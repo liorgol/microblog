@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3.11-slim
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
@@ -14,3 +14,6 @@ RUN flask translate compile
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
+# Added by CVE Remediator: security updates for packages the image ships
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends --only-upgrade zlib1g && rm -rf /var/lib/apt/lists/*
